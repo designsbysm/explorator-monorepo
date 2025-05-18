@@ -1,0 +1,18 @@
+{
+  "name": "@designsbysm/explorator-server",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "start": "node src/index.mjs"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "dotenv-expand": "^10.0.0",
+    "express": "^5.1.0",
+    "graphql-request": "^7.1.2",
+    "postgraphile": "^4.13.0"
+  },
+  "devDependencies": {}
+}

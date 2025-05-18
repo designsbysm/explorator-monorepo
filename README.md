@@ -1,1 +1,1 @@
-# explorator-monorepo-
+# explorator-monorepo

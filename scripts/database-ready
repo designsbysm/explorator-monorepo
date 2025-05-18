@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# database parameters
+HOST=localhost
+PORT=7310
+USER=postgres
+
+# retry parameters
+MAX_ATTEMPTS=8
+INTERVAL=15
+attempt=1
+
+# Loop until pg_isready returns 0 (success) or the maximum number of attempts is reached
+while ! pg_isready -h "$HOST" -p "$PORT" -U "$USER" >/dev/null 2>&1; do
+  if [ $attempt -gt $MAX_ATTEMPTS ]; then
+    echo "Failed to connect to PostgreSQL after $MAX_ATTEMPTS attempts."
+    exit 1
+  fi
+
+  echo "PostgreSQL is not ready, waiting $INTERVAL seconds..."
+  sleep $INTERVAL
+  attempt=$((attempt + 1))
+done
+
+echo "PostgreSQL is ready."
