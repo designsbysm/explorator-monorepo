@@ -7,16 +7,9 @@ import { Outlet } from "react-router";
  * @returns {React.JSX.Element}
  */
 const BaseLayout = () => (
-  <>
-    {/* <NavBar /> */}
-    <Container
-      maxWidth="lg"
-      component="main"
-      sx={{ display: "flex", flexDirection: "column", my: 4, gap: 4 }}
-    >
-      <Outlet />
-    </Container>
-  </>
+  <Container maxWidth="lg" component="main" sx={{ py: 3 }}>
+    <Outlet />
+  </Container>
 );
 
 export default BaseLayout;

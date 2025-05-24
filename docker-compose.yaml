@@ -1,15 +1,10 @@
 services:
   client:
     build:
-      args:
-        FONTAWESOME_NPM_TOKEN: ${FONTAWESOME_NPM_TOKEN}
       context: ./packages/client
     container_name: explorator-client
     depends_on:
       - server
-    # depends_on:
-    #   database:
-    #     condition: service_healthy
     environment:
       PORT_CLIENT: ${PORT_CLIENT}
     extra_hosts:
@@ -42,7 +37,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 4
-    # image: postgres:17.5-alpine
     ports:
       - ${PORT_DATABASE}:${PORT_DATABASE}
     restart: unless-stopped

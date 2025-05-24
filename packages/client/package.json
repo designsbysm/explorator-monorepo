@@ -6,6 +6,7 @@
   "scripts": {
     "build": "vite build",
     "lint": "eslint .",
+    "ngrok": "ngrok http 7300 --domain=sm.ngrok.dev",
     "preview": "vite preview",
     "start": "vite --port 7300 --open"
   },
@@ -15,8 +16,10 @@
     "@mui/icons-material": "^7.1.0",
     "@mui/joy": "^5.0.0-beta.52",
     "@mui/material": "^7.1.0",
+    "@mui/x-data-grid": "^8.4.0",
     "graphql": "^16.11.0",
     "graphql-request": "^7.1.2",
+    "lodash": "^4.17.21",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router": "^7.6.0"
