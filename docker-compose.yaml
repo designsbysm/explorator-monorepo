@@ -7,14 +7,14 @@ services:
       - server
     environment:
       PORT_CLIENT: ${PORT_CLIENT}
-    extra_hosts:
-        - "host.docker.internal:host-gateway"
     ports:
       - ${PORT_CLIENT}:${PORT_CLIENT}
     restart: unless-stopped
 
   database:
     build:
+      args:
+        DATABASE_ENV: ${DATABASE_ENV}
       context: ./db
     command: ["-c", "log_statement=all", "-p", "${PORT_DATABASE}"]
     container_name: explorator-database
@@ -28,15 +28,15 @@ services:
           "CMD",
           "pg_isready",
           "-h",
-          "${DOCKER_DOMAIN}",
+          "${DATABASE_DOMAIN}",
           "-p",
           "${PORT_DATABASE}",
           "-U",
           "${DATABASE_USER}",
         ]
-      interval: 10s
+      interval: 15s
       timeout: 5s
-      retries: 4
+      retries: 10
     ports:
       - ${PORT_DATABASE}:${PORT_DATABASE}
     restart: unless-stopped
@@ -49,7 +49,7 @@ services:
     depends_on:
       - database
     environment:
-      DATABASE_URL: ${DOCKER_DATABASE_URL}
+      DATABASE_URL: ${DATABASE_URL}
     image: ghcr.io/amacneil/dbmate
     volumes:
       - ./db:/db
@@ -62,7 +62,7 @@ services:
       database:
         condition: service_healthy
     environment:
-      DATABASE_URL: ${DOCKER_DATABASE_URL}
+      DATABASE_URL: ${DATABASE_URL}
       PORT_SERVER: ${PORT_SERVER}
     ports:
       - ${PORT_SERVER}:${PORT_SERVER}
