@@ -1,10 +1,5 @@
-import { Box, Button, IconButton, Stack } from "@mui/material";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import DeleteIcon from "@mui/icons-material/Delete";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-
+import { AppBar, Box, Button, Container, Stack, styled } from "@mui/material";
 import { DataGrid, GridFooter, GridFooterContainer } from "@mui/x-data-grid";
 import request, { gql } from "graphql-request";
 import { curry } from "lodash";
@@ -21,15 +16,93 @@ import {
   shipComponentSize,
   shipComponentType,
 } from "@/enums";
-import FilterSelect from "@/pages/FilterSelect";
-import FilterText from "@/pages/FilterText";
-// import LoadingSpinner from "@/pages/LoadingSpinner";
+import FilterSelect from "@/components/FilterSelect";
+import FilterText from "@/components/FilterText";
 
-// [x] move filters to dialog or hide them behind a button
-// [ ] deploy to DigitalOcean
+// [ ] sticky table header
 // [ ] add clear filters button
 // [ ] add checkboxes to table
 // [ ] get ngrok working with api, can vite proxy api?
+
+// <Container maxWidth="lg" component="main" sx={{ py: 3 }}>
+//   <Outlet />
+// </Container>
+const StickyContainer = styled(Container)(({ theme }) => ({
+  // maxWidth: theme.breakpoints.values.lg - 48,
+  // marginLeft: theme.spacing(3),
+  // marginRight: theme.spacing(6),
+  // position: "fixed",
+  // width: "100%",
+}));
+
+const StickyDataGrid = styled(DataGrid)`
+  position: fixed;
+  width: 100%;
+
+  ${({ theme }) =>
+    theme.breakpoints.up("lg") &&
+    {
+      // maxWidth: theme.breakpoints.values.lg - 48,
+    }}
+
+  ${({ theme }) =>
+    theme.breakpoints.down("lg") && {
+      maxWidth: theme.breakpoints.values.lg,
+    }}
+
+  ${({ theme }) =>
+    theme.breakpoints.down("md") &&
+    {
+      // maxWidth: theme.breakpoints.values.sm,
+    }}
+`;
+
+const StickyDataGrid1 = styled(DataGrid)(({ theme }) => {
+  // console.log(props);
+
+  console.log("lg", theme.breakpoints.down("lg"));
+  // theme.breakpoints./*  */
+
+  return {
+    // ${(props) =>
+    // props.theme.breakpoints.down('lg') && {
+    //   backgroundColor: 'green',
+    // }}
+
+    // theme.breakpoints.down("lg") {
+
+    // },
+
+    //
+    maxWidth: theme.breakpoints.values["md"],
+    // marginLeft: theme.spacing(3),
+    // marginRight: theme.spacing(6),
+    // top: 0,
+    // left: "auto",
+    // right: "auto",
+    position: "fixed",
+    width: "100%",
+  };
+});
+
+// const StickyDataGrid = styled(DataGrid)(({ theme }) => ({
+//   "& .MuiDataGrid-columnHeaders": {
+//     position: "sticky",
+//     // Replace background colour if necessary
+//     backgroundColor: theme.palette.background.paper,
+//     // Display header above grid data, but below any popups
+//     zIndex: theme.zIndex.mobileStepper - 1,
+//     top: 0,
+//   },
+//   "& .MuiDataGrid-virtualScroller": {
+//     // Undo the margins that were added to push the rows below the previously fixed header
+//     marginTop: "0 !important",
+//   },
+//   "& .MuiDataGrid-main": {
+//     // Not sure why it is hidden by default, but it prevented the header from sticking
+//     overflow: "visible",
+//   },
+// }));
 
 const columns = [
   {
@@ -100,6 +173,12 @@ const encodeFiltersToParams = (obj) => {
 const ShipComponents = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+  // const location = useLocation();
+
+  // useEffect(() => {
+  // console.log("location", location);
+  // console.log("windows.location", window.location.origin);
+  // }, [location]);
 
   //  const [searchParams] = useSearchParams();
   // console.log(n, t);
@@ -127,9 +206,6 @@ const ShipComponents = () => {
   const [filtered, setFiltered] = useState([]);
   // const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   console.log("searchParams", searchParams);
-  // }, [searchParams]);
   // useEffect(() => {
   //   console.log("loading", loading);
   // }, [loading]);
@@ -241,54 +317,66 @@ const ShipComponents = () => {
   );
 
   return (
-    <Box>
-      <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
-        <FilterText
-          defaultValue={filters.name}
-          label="Name"
-          onChange={handleChange("name")}
-        />
-        <Button
-          color={hasActiveFilters ? "secondary" : "inherit"}
-          onClick={() => setShowFilters((prev) => !prev)}
-          variant={showFilters ? "contained" : "outlined"}
-        >
-          <FilterAltIcon />
-        </Button>
-      </Stack>
-      {showFilters && (
-        <>
-          <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
-            <FilterSelect
-              defaultValue={filters.type}
-              label="Type"
-              options={enumValues(shipComponentType)}
-              onChange={handleChange("type")}
-            />
-            <FilterSelect
-              defaultValue={filters.size}
-              label="Size"
-              options={enumValues(shipComponentSize)}
-              onChange={handleChange("size")}
-            />
-          </Stack>
-          <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
-            <FilterSelect
-              defaultValue={filters.class}
-              label="Class"
-              options={enumValues(shipComponentClass)}
-              onChange={handleChange("class")}
-            />
-            <FilterSelect
-              defaultValue={filters.grade}
-              label="Grade"
-              options={enumValues(shipComponentGrade)}
-              onChange={handleChange("grade")}
-            />
-          </Stack>
-        </>
-      )}
-      <DataGrid
+    <>
+      <AppBar
+        position="sticky"
+        sx={(theme) => ({
+          // backgroundColor: "transparent",
+          // px: 2,
+          "--Paper-shadow": "0 !important",
+          "--Paper-overlay": "none !important",
+        })}
+      >
+        <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
+          <FilterText
+            defaultValue={filters.name}
+            label="Name"
+            onChange={handleChange("name")}
+          />
+          <Button
+            color={hasActiveFilters ? "secondary" : "inherit"}
+            onClick={() => setShowFilters((prev) => !prev)}
+            variant={showFilters ? "contained" : "outlined"}
+          >
+            <FilterAltIcon />
+          </Button>
+        </Stack>
+        {showFilters && (
+          <>
+            <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
+              <FilterSelect
+                defaultValue={filters.type}
+                label="Type"
+                options={enumValues(shipComponentType)}
+                onChange={handleChange("type")}
+              />
+              <FilterSelect
+                defaultValue={filters.size}
+                label="Size"
+                options={enumValues(shipComponentSize)}
+                onChange={handleChange("size")}
+              />
+            </Stack>
+            <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
+              <FilterSelect
+                defaultValue={filters.class}
+                label="Class"
+                options={enumValues(shipComponentClass)}
+                onChange={handleChange("class")}
+              />
+              <FilterSelect
+                defaultValue={filters.grade}
+                label="Grade"
+                options={enumValues(shipComponentGrade)}
+                onChange={handleChange("grade")}
+              />
+            </Stack>
+          </>
+        )}
+      </AppBar>
+
+      {/* <StickyContainer maxWidth="lg" sx={{ py: 3 }}> */}
+      <StickyDataGrid
         // disableColumnFilter
         // disableColumnSelector
         // disableDensitySelector
@@ -318,7 +406,8 @@ const ShipComponents = () => {
           },
         })}
       />
-    </Box>
+      {/* </StickyContainer> */}
+    </>
   );
 };
 

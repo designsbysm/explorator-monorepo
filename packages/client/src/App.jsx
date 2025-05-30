@@ -12,17 +12,15 @@ import AppRoutes from "@/components/AppRoutes";
 /**
  * @returns {React.JSX.Element}
  */
-const App = () => {
-  return (
-    <StyledEngineProvider injectFirst>
-      <ThemeProvider theme={theme} disableTransitionOnChange>
-        <CssBaseline enableColorScheme />
-        <BrowserRouter>
-          <AppRoutes />
-        </BrowserRouter>
-      </ThemeProvider>
-    </StyledEngineProvider>
-  );
-};
+const App = () => (
+  <StyledEngineProvider injectFirst>
+    <ThemeProvider theme={theme} disableTransitionOnChange>
+      <CssBaseline enableColorScheme />
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
+    </ThemeProvider>
+  </StyledEngineProvider>
+);
 
 export default App;
