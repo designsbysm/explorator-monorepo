@@ -6,6 +6,5 @@ COPY ./package.json .
 RUN yarn install
 
 COPY . .
-COPY ./.env.docker .env
 
-CMD yarn start
+CMD yarn serve

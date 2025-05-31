@@ -37,7 +37,7 @@ migrate-up: ## Apply the latest migration to the database
 
 .PHONY: ngrok
 ngrok: ## Forward the locally running application to sm.ngrok.dev
-	ngrok http 7300 --domain=sm.ngrok.dev --host-header=\"localhost\"
+	ngrok http 7300 --domain=sm.ngrok.dev
 
 .PHONY: rebuild
 rebuild: ## Remove and rebuild a single Docker container

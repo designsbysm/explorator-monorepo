@@ -11,7 +11,7 @@ import { curry } from "lodash";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 
-import { apiURL } from "@/config.mjs";
+import { serverURL } from "@/config.mjs";
 import {
   enumDecode,
   enumEncode,
@@ -138,7 +138,7 @@ const ShipComponents = () => {
     // setLoading(true);
     (async () => {
       const data = await request(
-        `${apiURL}/graphql`,
+        `${serverURL}/graphql`,
         gql`
           {
             allShipComponents(orderBy: NAME_ASC) {

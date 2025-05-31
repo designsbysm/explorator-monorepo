@@ -1,31 +1,25 @@
 import cors from "cors";
-import { config } from "dotenv";
-import { expand } from "dotenv-expand";
 import express from "express";
 import { postgraphile } from "postgraphile";
 
-expand(config());
+import { databaseURL, serverPort } from "./config.mjs";
 
 const app = express();
 
-const corsOptions = {
-  origin: process.env.FRONTEND_URL,
-};
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use(
-  postgraphile(process.env.DATABASE_URL, "public", {
+  postgraphile(databaseURL, "public", {
     enhanceGraphiql: true,
     graphiql: true,
     watchPg: true,
   })
 );
 
-app.get("/", (_req, res) => {
+app.get("/api/hello", (_req, res) => {
   res.json({ message: "hello world" });
 });
 
-const port = process.env.PORT_SERVER || 3000;
-app.listen(port, () => {
-  console.log(`listening on :${port}`);
+app.listen(serverPort, () => {
+  console.log(`listening on :${serverPort}`);
 });

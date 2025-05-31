@@ -4,7 +4,8 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "start": "node src/index.mjs"
+    "serve": "node src/index.mjs",
+    "start": "nodemon ./src/index.mjs"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -14,5 +15,7 @@
     "graphql-request": "^7.1.2",
     "postgraphile": "^4.13.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
 }

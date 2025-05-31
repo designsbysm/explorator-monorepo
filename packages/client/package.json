@@ -6,9 +6,8 @@
   "scripts": {
     "build": "vite build",
     "lint": "eslint .",
-    "ngrok": "ngrok http 7300 --domain=sm.ngrok.dev",
     "preview": "vite preview",
-    "start": "vite --port 7300 --open"
+    "start": "vite"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
