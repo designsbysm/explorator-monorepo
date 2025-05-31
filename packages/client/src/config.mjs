@@ -1,5 +1,5 @@
-// [ ] get from main .env?
+const envURL = import.meta.env.VITE_SERVER_URL;
 
-const apiURL = import.meta.env.VITE_API_URL;
+const serverURL = envURL || `${window.location.origin}`;
 
-export { apiURL };
+export { serverURL };

@@ -2,6 +2,8 @@ services:
   client:
     build:
       context: ./packages/client
+      args:
+        PORT_CLIENT: ${PORT_CLIENT}
     container_name: explorator-client
     depends_on:
       - server
@@ -28,7 +30,7 @@ services:
           "CMD",
           "pg_isready",
           "-h",
-          "${DATABASE_DOMAIN}",
+          "${HOST_DATABASE}",
           "-p",
           "${PORT_DATABASE}",
           "-U",
@@ -42,6 +44,20 @@ services:
     restart: unless-stopped
     volumes:
       - ./db/init:/docker-entrypoint-initdb.d
+      
+  gateway:
+    build:
+      context: ./packages/gateway
+      args:
+        HOST_CLIENT: ${HOST_CLIENT}
+        HOST_SERVER: ${HOST_SERVER}
+    container_name: explorator-gateway
+    depends_on:
+      - server
+      - client
+    ports:
+      - ${PORT_GATEWAY}:80
+    restart: unless-stopped
 
   migrations:
     command: ["--wait", "up"]

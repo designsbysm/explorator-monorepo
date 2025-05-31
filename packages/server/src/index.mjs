@@ -8,10 +8,7 @@ expand(config());
 
 const app = express();
 
-const corsOptions = {
-  origin: process.env.FRONTEND_URL,
-};
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use(
   postgraphile(process.env.DATABASE_URL, "public", {
@@ -21,7 +18,7 @@ app.use(
   })
 );
 
-app.get("/", (_req, res) => {
+app.get("/api/", (_req, res) => {
   res.json({ message: "hello world" });
 });
 
