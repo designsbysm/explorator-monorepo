@@ -1,10 +1,4 @@
-import { Box, Button, IconButton, Stack } from "@mui/material";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import DeleteIcon from "@mui/icons-material/Delete";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-
+import { AppBar, Box, Button, Container, Stack, styled } from "@mui/material";
 import { DataGrid, GridFooter, GridFooterContainer } from "@mui/x-data-grid";
 import request, { gql } from "graphql-request";
 import { curry } from "lodash";
@@ -21,13 +15,10 @@ import {
   shipComponentSize,
   shipComponentType,
 } from "@/enums";
-import FilterSelect from "@/pages/FilterSelect";
-import FilterText from "@/pages/FilterText";
-// import LoadingSpinner from "@/pages/LoadingSpinner";
+import FilterSelect from "@/components/FilterSelect";
+import FilterText from "@/components/FilterText";
 
-// [x] move filters to dialog or hide them behind a button
-// [ ] deploy to DigitalOcean
-// [ ] add clear filters button
+// [ ] sticky table header
 // [ ] add checkboxes to table
 // [ ] get ngrok working with api, can vite proxy api?
 
@@ -128,9 +119,6 @@ const ShipComponents = () => {
   // const [loading, setLoading] = useState(true);
 
   // useEffect(() => {
-  //   console.log("searchParams", searchParams);
-  // }, [searchParams]);
-  // useEffect(() => {
   //   console.log("loading", loading);
   // }, [loading]);
 
@@ -227,14 +215,6 @@ const ShipComponents = () => {
       return data;
     });
   });
-
-  // if (loading) {
-  //   return (
-  //     // <Box sx={{ display: "flex", justifyContent: "center", p: 2 }}>
-  //     <LoadingSpinner />
-  //     // </Box>
-  //   );
-  // }
 
   const hasActiveFilters = Object.values(filters).some(
     (v) => Array.isArray(v) && v.length > 0
