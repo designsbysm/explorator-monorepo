@@ -1,3 +1,5 @@
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { AppBar, Box, Button, Container, Stack, styled } from "@mui/material";
 import { DataGrid, GridFooter, GridFooterContainer } from "@mui/x-data-grid";
 import request, { gql } from "graphql-request";
@@ -15,6 +17,7 @@ import {
   shipComponentSize,
   shipComponentType,
 } from "@/enums";
+import CircledIcon from "@/components/CircledIcon";
 import FilterSelect from "@/components/FilterSelect";
 import FilterText from "@/components/FilterText";
 
@@ -92,13 +95,6 @@ const ShipComponents = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  //  const [searchParams] = useSearchParams();
-  // console.log(n, t);
-
-  // /**
-  //  * @type {useState<ShipComponents[]>}
-  //  */
-  // [ ]  get filter from url
   const [filters, setFilters] = useState(() => {
     const n = searchParams.get("name") || "";
     const c = searchParams.get("class")?.split(",") || [];
@@ -116,14 +112,8 @@ const ShipComponents = () => {
   });
   const [components, setComponents] = useState([]);
   const [filtered, setFiltered] = useState([]);
-  // const [loading, setLoading] = useState(true);
-
-  // useEffect(() => {
-  //   console.log("loading", loading);
-  // }, [loading]);
 
   useEffect(() => {
-    // setLoading(true);
     (async () => {
       const data = await request(
         `${serverURL}/graphql`,
@@ -198,16 +188,10 @@ const ShipComponents = () => {
     const params = encodeFiltersToParams(filters);
     setSearchParams(params);
 
-    // const params2 = new URLSearchParams(filters);
-    // console.log("URL Params2:", params2.toString());
-    // console.log("URL Params:", filters, params.toString());
-
     setFiltered(filtered);
-    // setLoading(false);
   }, [components, filters, setSearchParams]);
 
   const handleChange = curry((property, value) => {
-    // setLoading(true);
     setFilters((prev) => {
       const data = { ...prev };
       data[property] = value;
@@ -216,71 +200,64 @@ const ShipComponents = () => {
     });
   });
 
-  const hasActiveFilters = Object.values(filters).some(
-    (v) => Array.isArray(v) && v.length > 0
-  );
-
   return (
-    <Box>
-      <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
-        <FilterText
-          defaultValue={filters.name}
-          label="Name"
-          onChange={handleChange("name")}
-        />
-        <Button
-          color={hasActiveFilters ? "secondary" : "inherit"}
-          onClick={() => setShowFilters((prev) => !prev)}
-          variant={showFilters ? "contained" : "outlined"}
-        >
-          <FilterAltIcon />
-        </Button>
-      </Stack>
-      {showFilters && (
-        <>
-          <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
-            <FilterSelect
-              defaultValue={filters.type}
-              label="Type"
-              options={enumValues(shipComponentType)}
-              onChange={handleChange("type")}
+    <>
+      <AppBar position="sticky" sx={{ p: 2, mb: 2 }}>
+        <Stack direction="row" spacing={2}>
+          <FilterText
+            defaultValue={filters.name}
+            label="Name"
+            onChange={handleChange("name")}
+          />
+          <Button onClick={() => setShowFilters((prev) => !prev)}>
+            <CircledIcon
+              OverlayIcon={
+                showFilters ? KeyboardArrowUpIcon : KeyboardArrowDownIcon
+              }
             />
-            <FilterSelect
-              defaultValue={filters.size}
-              label="Size"
-              options={enumValues(shipComponentSize)}
-              onChange={handleChange("size")}
-            />
-          </Stack>
-          <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
-            <FilterSelect
-              defaultValue={filters.class}
-              label="Class"
-              options={enumValues(shipComponentClass)}
-              onChange={handleChange("class")}
-            />
-            <FilterSelect
-              defaultValue={filters.grade}
-              label="Grade"
-              options={enumValues(shipComponentGrade)}
-              onChange={handleChange("grade")}
-            />
-          </Stack>
-        </>
-      )}
+          </Button>
+        </Stack>
+        {showFilters && (
+          <>
+            <Stack direction="row" spacing={2} sx={{ my: 2 }}>
+              <FilterSelect
+                defaultValue={filters.type}
+                label="Type"
+                options={enumValues(shipComponentType)}
+                onChange={handleChange("type")}
+              />
+              <FilterSelect
+                defaultValue={filters.size}
+                label="Size"
+                options={enumValues(shipComponentSize)}
+                onChange={handleChange("size")}
+              />
+            </Stack>
+            <Stack direction="row" spacing={2}>
+              <FilterSelect
+                defaultValue={filters.class}
+                label="Class"
+                options={enumValues(shipComponentClass)}
+                onChange={handleChange("class")}
+              />
+              <FilterSelect
+                defaultValue={filters.grade}
+                label="Grade"
+                options={enumValues(shipComponentGrade)}
+                onChange={handleChange("grade")}
+              />
+            </Stack>
+          </>
+        )}
+      </AppBar>
       <DataGrid
-        // disableColumnFilter
-        // disableColumnSelector
-        // disableDensitySelector
         columns={columns}
         disableColumnMenu
         hideFooterPagination
-        // loading={loading}
         paginationMode="server"
         pagination
         rowCount={filtered.length}
         rows={filtered}
-        // showToolbar
         slots={{
           footer: CustomFooter,
         }}
@@ -298,7 +275,7 @@ const ShipComponents = () => {
           },
         })}
       />
-    </Box>
+    </>
   );
 };
 
