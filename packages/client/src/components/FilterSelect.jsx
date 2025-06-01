@@ -27,7 +27,7 @@ const FilterSelect = ({ defaultValue = [], label, onChange, options }) => {
   };
 
   return (
-    <FormControl variant="filled" sx={{ mb: 2, width: "100%" }}>
+    <FormControl fullWidth variant="standard" sx={{ mb: 2 }}>
       <InputLabel>{label}</InputLabel>
       <Select
         endAdornment={

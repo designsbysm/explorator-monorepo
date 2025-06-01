@@ -1,8 +1,8 @@
 import CancelIcon from "@mui/icons-material/Cancel";
 import {
-  FilledInput,
   FormControl,
   IconButton,
+  Input,
   InputAdornment,
   InputLabel,
 } from "@mui/material";
@@ -24,9 +24,9 @@ const FilterText = ({ defaultValue = "", label, onChange }) => {
   };
 
   return (
-    <FormControl sx={{ mb: 2, width: "100%" }} variant="filled">
+    <FormControl fullWidth sx={{ mb: 2 }} variant="standard">
       <InputLabel>{label}</InputLabel>
-      <FilledInput
+      <Input
         endAdornment={
           value && (
             <InputAdornment position="end">
