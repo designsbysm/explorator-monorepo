@@ -6,10 +6,14 @@ import {
   InputAdornment,
   InputLabel,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const FilterText = ({ defaultValue = "", label, onChange }) => {
   const [value, setValue] = useState(defaultValue);
+
+  useEffect(() => {
+    setValue(defaultValue);
+  }, [defaultValue]);
 
   const hanldeChange = (newValue) => {
     setValue(newValue);

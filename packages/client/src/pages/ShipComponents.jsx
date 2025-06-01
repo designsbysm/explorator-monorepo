@@ -247,6 +247,27 @@ const ShipComponents = () => {
                 onChange={handleChange("grade")}
               />
             </Stack>
+            <Button
+              disabled={
+                !Object.values(filters).some(
+                  (v) =>
+                    (Array.isArray(v) && v.length > 0) ||
+                    (!Array.isArray(v) && v)
+                )
+              }
+              onClick={() =>
+                setFilters(() => ({
+                  class: [],
+                  name: "",
+                  grade: [],
+                  size: [],
+                  type: [],
+                }))
+              }
+              sx={{ mt: 2 }}
+            >
+              Clear All
+            </Button>
           </>
         )}
       </AppBar>

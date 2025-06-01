@@ -9,10 +9,14 @@ import {
   Select,
 } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const FilterSelect = ({ defaultValue = [], label, onChange, options }) => {
   const [selectedValues, setSelectedValues] = useState(defaultValue);
+
+  useEffect(() => {
+    setSelectedValues(defaultValue);
+  }, [defaultValue]);
 
   const handleChange = (newValue) => {
     setSelectedValues(newValue);
