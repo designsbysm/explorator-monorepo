@@ -1,15 +1,13 @@
 .DEFAULT_GOAL := start
+.PHONY: build host start
 ARGUMENTS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
 
-.PHONY: build
 build: ## Build the application
 	yarn build
 
-.PHONY: host
 host: ## Serve the application for ngrok
 	yarn start --host
 
-.PHONY: start
 start: ## Start the application
 	yarn start
 

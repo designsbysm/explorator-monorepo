@@ -1,7 +1,7 @@
 .DEFAULT_GOAL := start
+.PHONY: start
 ARGUMENTS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
 
-.PHONY: start
 start: ## Start the server
 	yarn start
 
