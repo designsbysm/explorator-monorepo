@@ -287,15 +287,16 @@ const ShipComponents = () => {
             rowCount: filtered.length,
           },
         }}
-        sx={(theme) => ({
-          "& .MuiDataGrid-columnHeader:focus, & .MuiDataGrid-cell:focus": {
-            outline: "none",
-          },
-          "& .MuiDataGrid-row:nth-of-type(odd)": {
-            backgroundColor: theme.palette.secondary.contrastText,
-          },
-        })}
+        // sx={(theme) => ({
+        //   "& .MuiDataGrid-columnHeader:focus, & .MuiDataGrid-cell:focus": {
+        //     outline: "none",
+        //   },
+        //   "& .MuiDataGrid-row:nth-of-type(odd)": {
+        //     backgroundColor: theme.palette.secondary.contrastText,
+        //   },
+        // })}
       />
+      {/* </StickyContainer> */}
     </>
   );
 };
