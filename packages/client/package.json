@@ -10,12 +10,15 @@
     "start": "vite"
   },
   "dependencies": {
+    "@awesome.me/webawesome": "^3.0.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.1.0",
     "@mui/joy": "^5.0.0-beta.52",
     "@mui/material": "^7.1.0",
     "@mui/x-data-grid": "^8.4.0",
+    "dotenv": "^17.2.3",
+    "dotenv-expand": "^12.0.3",
     "graphql": "^16.11.0",
     "graphql-request": "^7.1.2",
     "lodash": "^4.17.21",
