@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
-.PHONY: help db-wipe down migrate-down migrate-new migrate-up ngrok prune rebuild up
-.SILIENT: help db-wipe down migrate-down migrate-new migrate-up ngrok prune rebuild up
+.PHONY: help db-wipe down migrate-down migrate-new migrate-up ngrok prune rebuild status up
+.SILENT: help db-wipe down migrate-down migrate-new migrate-up ngrok prune rebuild status up
 
 ARGUMENTS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
 # DOCKER_COMPOSE = docker compose --env-file ./.env.docker
@@ -40,7 +40,11 @@ prune: ## Delete all unused Docker images and containers
 rebuild: ## Remove and rebuild a single Docker container
 	docker compose rm -fsv $(ARGUMENTS)
 	COMPOSE_BAKE=true docker compose up -d --build $(ARGUMENTS)
-	
+
+status: ## List the status of the Docker containers
+	docker ps --filter name=explorator --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+	@echo ""
+
 up: ## Start all Docker containers
 	COMPOSE_BAKE=true docker compose up -d --build $(ARGUMENTS)
 
