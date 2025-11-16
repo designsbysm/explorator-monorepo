@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
-.PHONY: help db-wipe down migrate-down migrate-new migrate-up ngrok prune rebuild status up
-.SILENT: help db-wipe down migrate-down migrate-new migrate-up ngrok prune rebuild status up
+.PHONY: help db-down db-new db-up db-wipe down ngrok prune rebuild status up
+.SILENT: help db-down db-new db-up db-wipe down ngrok prune rebuild status up
 
 ARGUMENTS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
 # DOCKER_COMPOSE = docker compose --env-file ./.env.docker
@@ -11,6 +11,17 @@ help: ## Print this help message
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2}';
 	@echo "";
 
+db-down: ## Revert the database to the previous migration
+	dbmate wait
+	dbmate down -v
+
+db-new: ## Create a new migration
+	dbmate new $(ARGUMENTS)
+
+db-up: ## Apply the latest migration to the database
+	dbmate wait
+	dbmate up -v
+
 db-wipe: ## Reset the database to a clean state
 	docker compose rm -fsv database migrations
 	docker compose up -d database migrations
@@ -18,17 +29,6 @@ db-wipe: ## Reset the database to a clean state
 
 down: ## Remove all Docker containers
 	docker compose down $(ARGUMENTS)
-
-migrate-down: ## Revert the database to the previous migration
-	dbmate wait
-	dbmate down -v
-
-migrate-new: ## Create a new migration
-	dbmate new $(ARGUMENTS)
-
-migrate-up: ## Apply the latest migration to the database
-	dbmate wait
-	dbmate up -v
 
 ngrok: ## Forward the locally running application to sm.ngrok.dev
 	ngrok http 7300 --domain=sm.ngrok.dev
